@@ -29,7 +29,8 @@ router.get("/search", async (req, res) => {
       keyword,
     })
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '搜尋失敗'
+    next(error)
   }
 })
 
@@ -39,7 +40,8 @@ router.get("/", async (req, res) => {
     const restaurants = await Restaurant.findAll({ raw: true })
     res.render("index", { cssPath: cssIndex, restaurants })
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '資料取得失敗'
+    next(error)
   }
 })
 
@@ -48,7 +50,8 @@ router.get("/new", (req, res) => {
   try {
     res.render("new")
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '讀取頁面失敗'
+    next(error)
   }
 })
 
@@ -59,7 +62,8 @@ router.get("/:id", async (req, res) => {
     const restaurant = await Restaurant.findByPk(id, { raw: true })
     res.render("show", { cssPath: cssShow, restaurant })
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '資料取得失敗'
+    next(error)
   }
 })
 
@@ -92,7 +96,8 @@ router.post("/", async (req, res) => {
       res.redirect("/restaurants")
     }
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '新增失敗'
+    next(error)
   }
 })
 
@@ -103,7 +108,8 @@ router.get("/:id/edit", async (req, res) => {
     const restaurant = await Restaurant.findByPk(id, { raw: true })
     res.render("edit", { restaurant })
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '讀取頁面失敗'
+    next(error)
   }
 })
 // 更新餐廳
@@ -138,7 +144,8 @@ router.put("/:id", async (req, res) => {
     )
     res.redirect(`/restaurants/${id}`)
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '更新失敗'
+    next(error)
   }
 })
 
@@ -149,7 +156,8 @@ router.delete("/:id", async (req, res) => {
     await Restaurant.destroy({ where: { id } })
     res.redirect("/restaurants")
   } catch (error) {
-    res.status(422).json(error)
+    error.Message = '刪除失敗'
+    next(error)
   }
 })
 
