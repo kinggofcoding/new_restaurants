@@ -1,0 +1,65 @@
+<div class="container">
+  <h2>Create Restaurant</h2>
+</div>
+<hr />
+<div class="container">
+  <form id="restaurant-form" action="/restaurants" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Restaurant name</label>
+      <input name="name" type="text" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+      <label for="name_en" class="form-label">Restaurant name(English)</label>
+      <input name="name_en" type="text" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select class="form-select" form="restaurant-form" name="category">
+        <option value="美式">美式</option>
+        <option value="酒吧">酒吧</option>
+        <option value="咖啡">咖啡</option>
+        <option value="義式餐廳">義式餐廳</option>
+        <option value="中東料理">中東料理</option>
+        <option value="日本料理">日本料理</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="image" class="form-label">Image Link</label>
+      <input name="image" type="url" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input name="location" type="text" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="google_map" class="form-label">Google Map Link</label>
+      <input name="google_map" type="url" class="form-control" />
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Phone</label>
+      <input
+        name="phone"
+        type="tel"
+        class="form-control"
+        pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}"
+      />
+    </div>    
+    <div class="mb-3">
+      <label for="rating" class="form-label">Rating</label>
+      <input
+        name="rating"
+        inputmode="decimal"
+        type="text"
+        class="form-control"
+        value="0.0"
+        pattern="[0-5][.,]?[0-9]*"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control" name="description" id="" cols="10" rows="2" form="restaurant-form"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="/restaurants" class="btn btn-secondary">Back</a>
+  </form>
+</div>
