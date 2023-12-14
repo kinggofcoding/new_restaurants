@@ -7,6 +7,8 @@ const router = require('./routes')
 const flash = require('connect-flash')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
+const session = require('express-session')
+
 
 // express初始化設定: template,static file, view path,post數據解析
 app.use(express.urlencoded({ extended: true }))
@@ -15,6 +17,13 @@ app.engine(".hbs", engine({ extname: ".hbs" }))
 app.set("view engine", ".hbs")
 app.set("views", "./views")
 app.use(express.static("public"))
+
+app.use(session({
+  secret: 'This is secret',
+  resave: false,
+  saveUninitialized: false
+}))
+
 
 app.use(flash())
 app.use(messageHandler)
