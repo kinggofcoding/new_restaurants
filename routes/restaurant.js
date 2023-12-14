@@ -3,7 +3,7 @@ const router = express.Router()
 const cssIndex = "/stylesheets/index.css" // index所使用的css
 const cssShow = "/stylesheets/show.css" // show所使用的css
 // 引入所有model
-const db = require("./models")
+const db = require("../models")
 // 引入restaurant model
 const Restaurant = db.Restaurant
 
