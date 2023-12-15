@@ -37,8 +37,27 @@ router.get("/search", async (req, res) => {
 // 讀取所有餐廳
 router.get("/", async (req, res) => {
   try {
-    const restaurants = await Restaurant.findAll({ raw: true })
-    res.render("index", { cssPath: cssIndex, restaurants })
+    const page = parseInt(req.query.page) || 1
+    const limit = 9
+
+    
+    //依據頁數取得餐廳
+    const restaurants = await Restaurant.findAll({ 
+        raw: true,
+        offset: (page - 1) * limit,
+        limit
+    })
+
+    const counts = await Restaurant.count() //取得所有餐廳筆數
+
+    const totalPage = Array.from(Array(Math.ceil(counts / limit)).keys(), (key) => key + 1) //所有餐廳總共頁數
+
+    res.render("index", {
+         cssPath: cssIndex,
+         restaurants,
+         totalPage,
+         page
+    })
   } catch (error) {
     error.Message = '資料取得失敗'
     next(error)

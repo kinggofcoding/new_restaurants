@@ -1,5 +1,3 @@
-
-
 <!-- search bar -->
 <div class="container search-bar">
   <div class="search-bar-outer">
@@ -84,3 +82,17 @@
     </div>
   </div>
 </div>
+<div class="d-flex justify-content-center">
+  <p>Page now: {{page}}</p>
+</div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {{#each totalPage}}
+    <li class="page-item">
+      <form action="/restaurants">
+        <input name="page" class="page-link" type="submit" value="{{this}}">
+      </form>
+    </li>
+    {{/each}}
+  </ul>
+</nav>
