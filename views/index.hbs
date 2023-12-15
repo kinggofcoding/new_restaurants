@@ -25,12 +25,26 @@
   </div>
 </div>
 <!-- Create restaurant -->
-<div class="container">
-  <form action="/restaurants/new">
-    <button type="submit" class="btn btn-primary mx-auto">Create Restaurant</button>
-  </form>
-</div>
+<div class="d-flex justify-content-around mt-5 container">
+  <div class="container">
+    <form action="/restaurants/new">
+      <button type="submit" class="btn btn-primary mx-auto">Create Restaurant</button>
+    </form>
+  </div>
+  <div class="input-group container">
+    <select class="form-select" form="sort-form" name="sort">
+      <option selected>{{sortState}}</option>
+      <option value="A-Z">A-Z</option>
+      <option value="Z-A">Z-A</option>
+      <option value="Category">Category</option>
+      <option value="Location">Location</option>
+    </select>
+    <form action="/restaurants" id="sort-form">
+      <button class="btn btn-outline-secondary" type="submit">Sort</button>
+    </form>
+  </div>
 
+</div>
 <!-- restaurant list -->
 <div class="container mt-5">
   <div class="row">
@@ -87,12 +101,33 @@
 </div>
 <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    {{#each totalPage}}
-    <li class="page-item">
-      <form action="/restaurants">
-        <input name="page" class="page-link" type="submit" value="{{this}}">
-      </form>
-    </li>
-    {{/each}}
+    {{#if keyword}}
+      {{#each totalPage}}
+        <li class="page-item">
+          <form action="/restaurants/search">
+            <input
+              name="page"
+              class="page-link"
+              type="submit"
+              value="{{this}}"
+            />
+            <input name="keyword" type="hidden" value="" />
+          </form>
+        </li>
+      {{/each}}
+    {{else}}
+      {{#each totalPage}}
+        <li class="page-item">
+          <form action="/restaurants">
+            <input
+              name="page"
+              class="page-link"
+              type="submit"
+              value="{{this}}"
+            />
+          </form>
+        </li>
+      {{/each}}
+    {{/if}}
   </ul>
 </nav>

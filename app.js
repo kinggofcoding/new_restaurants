@@ -18,6 +18,7 @@ app.set("view engine", ".hbs")
 app.set("views", "./views")
 app.use(express.static("public"))
 
+// 設置session存放於Server
 app.use(session({
   secret: 'This is secret',
   resave: false,
@@ -25,10 +26,10 @@ app.use(session({
 }))
 
 
-app.use(flash())
-app.use(messageHandler)
-app.use('/', router)
-app.use(errorHandler)
+app.use(flash()) //setup flash message
+app.use(messageHandler) //setup middleware: message handle
+app.use('/', router) //setup router
+app.use(errorHandler) //setup middleware: error handle
 
 // 伺服器啟動並監聽port:3000
 app.listen(port, () => {
