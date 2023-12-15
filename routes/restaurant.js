@@ -42,7 +42,8 @@ router.get("/", async (req, res) => {
 
     
     //依據頁數取得餐廳
-    const restaurants = await Restaurant.findAll({ 
+    const restaurants = await Restaurant.findAll({
+        attributes: ["id" ,"name", "category", "image", "rating"],
         raw: true,
         offset: (page - 1) * limit,
         limit
