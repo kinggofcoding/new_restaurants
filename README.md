@@ -37,10 +37,10 @@ npx sequelize db:migrate
 npx sequelize db:seed:all
 
 ```
-4.Launch the application
+6.Launch the application
 
 ```
 npm start
 ```
 
-5.Server is running on http://localhost:3000 .
+7.Server is running on http://localhost:3000 .
