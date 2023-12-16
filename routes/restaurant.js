@@ -8,68 +8,12 @@ const db = require("../models")
 // 引入restaurant model
 const Restaurant = db.Restaurant
 
-//搜尋餐廳
-router.get("/search", async (req, res, next) => {
-  try {
-    const page = parseInt(req.query.page) || 1 // 當前頁數
-    const limit = 9 // 一頁顯示的資料筆數
-    const keyword = req.query.keyword?.trim()
-    const { count, rows } = await Restaurant.findAndCountAll({ 
-      attributes: ["id" ,"name", "category", "image", "rating"],
-      raw: true,
-      offset: (page - 1) * limit,
-      limit,
-      where: {
-        [Op.or]: [
-          { name: { 
-            [Op.substring]: keyword
-          }},
-          { name_en: { 
-            [Op.substring]: keyword
-          }},
-          { category: { 
-            [Op.substring]: keyword
-          }},
-          { location: { 
-            [Op.substring]: keyword
-          }},
-          { description: { 
-            [Op.substring]: keyword
-          }}
-        ]
-      }
-    })
-    // const matchedRestaurants = keyword
-    //   ? restaurants.filter((restaurant) =>
-    //       Object.values(restaurant).some((property) => {
-    //         if (typeof property === "string") {
-    //           return property.toLowerCase().includes(keyword.toLowerCase())
-    //         }
-    //         return false
-    //       })
-    //     )
-    //   : restaurants
-    const totalPage = Array.from(Array(Math.ceil(count / limit)).keys(), (key) => key + 1)
-
-    res.render("index", {
-      restaurants: rows,
-      cssPath: cssIndex,
-      keyword,
-      page,
-      totalPage
-    })
-  } catch (error) {
-    error.Message = '搜尋失敗'
-    next(error)
-  }
-})
 
 // 讀取所有餐廳
 router.get("/", async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) || 1 // 當前頁數
-    const limit = 9 // 一頁顯示的資料筆數
-    const sortState = req.query.sort || "None" // 排序方式
+    const keyword = req.query.keyword?.trim() // 搜尋關鍵字
+    const sortState = req.query.sort || "排序" // 排序方式
     const orderBy = [] // 資料排序的參數
 
     // 確認排序的方式並設定參數
@@ -90,26 +34,41 @@ router.get("/", async (req, res, next) => {
         orderBy.push("id")
         break
     }
-
-    //依據頁數取得餐廳並設定排序方式
-    const { count, rows } = await Restaurant.findAndCountAll({
+    
+    // 如果有關鍵字則設定為查詢條件
+    const searchByKeyword = keyword ? {
+      [Op.or]: [
+        { name: { 
+          [Op.substring]: keyword
+        }},
+        { name_en: { 
+          [Op.substring]: keyword
+        }},
+        { category: { 
+          [Op.substring]: keyword
+        }},
+        { location: { 
+          [Op.substring]: keyword
+        }},
+        { description: { 
+          [Op.substring]: keyword
+        }}
+      ]
+    }
+    : ''
+    //取得餐廳並設定排序方式
+    const restaurants = await Restaurant.findAll({
         attributes: ["id" ,"name", "category", "image", "rating"],
         raw: true,
-        offset: (page - 1) * limit,
-        limit,
-        order: [orderBy]
+        order: [orderBy],
+        where: searchByKeyword
     })
-
-
-
-    const totalPage = Array.from(Array(Math.ceil(count / limit)).keys(), (key) => key + 1) //所有餐廳總共頁數
 
     res.render("index", {
          cssPath: cssIndex,
-         restaurants: rows,
-         totalPage,
-         page,
+         restaurants,
          sortState,
+         keyword
     })
   } catch (error) {
     error.Message = '資料取得失敗'

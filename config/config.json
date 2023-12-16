@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "1qaz@WSX",
+    "password": null,
     "database": "restaurant",
     "host": "127.0.0.1",
     "dialect": "mysql"
